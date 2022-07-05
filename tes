@@ -1,2 +1,59 @@
-test
-test
+I tried to download CFEngine Client Package for Solaris , Installed with below commands but unable to bootstrap, Getting below error.
+
+
+OS Version
+=====================================================
+@scapcsfdev01:~# cat /etc/release
+                            Oracle Solaris 11.4 SPARC
+  Copyright (c) 1983, 2019, Oracle and/or its affiliates.  All rights reserved.
+                           Assembled 01 February 2019
+=======================================================
+Downloaded Package : https://cfengine-package-repos.s3.amazonaws.com/enterprise/Enterprise-3.18.2/agent/solaris_11_sparc/CFEcfengine-nova-3.18.2.1-solaris11-sparc.pkg
+=====================================================
+pkgadd -d /root/CFEcfengine-nova-3.18.2.1-solaris11-sparc.pkg all
+=====================================================
+Error
+-----------------
+2022-06-30T01:58:43-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Couldn't receive. (recv: Connection reset by peer)
+2022-06-30T01:58:43-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Protocol transaction broken off (1). (ReceiveTransaction: Connection reset by peer)
+2022-06-30T01:58:43-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Authentication dialogue with '10.7.140.175' failed
+2022-06-30T01:58:43-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: No suitable server responded to hail
+R: This autonomous node assumes the role of voluntary client
+R: Failed to copy policy from policy server at 10.7.140.175:/var/cfengine/masterfiles
+       Please check
+       * cf-serverd is running on 10.7.140.175
+       * network connectivity to 10.7.140.175 on port 5308
+       * masterfiles 'body server control' - in particular allowconnects, trustkeysfrom and skipverify
+       * masterfiles 'bundle server' -> access: -> masterfiles -> admit/deny
+       It is often useful to restart cf-serverd in verbose mode (cf-serverd -v) on 10.7.140.175 to diagnose connection issues.
+       When updating masterfiles, wait (usually 5 minutes) for files to propagate to inputs on 10.7.140.175 before retrying.
+R: Did not start the scheduler
+2022-06-30T01:58:44-0500   notice: /default/cfe_internal_call_update/commands/'"/var/cfengine/bin/cf-agent" -f update.cf'[0]: Q: ".../cf-agent" -f u": 2022-06-30T01:58:43-0500    error: There is no readable input file at '/var/cfengine/inputs/update.cf'. (stat: No such file or directory)
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:43-0500    error: CFEngine was not able to get confirmation of promises from cf-promises, so going to failsafe
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Couldn't receive. (recv: Connection reset by peer)
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Protocol transaction broken off (1). (ReceiveTransaction: Connection reset by peer)
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: Authentication dialogue with '10.7.140.175' failed
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: /default/cfe_internal_update/files/'/var/cfengine/inputs'[0]: No suitable server responded to hail
+Q: ".../cf-agent" -f u": R: Failed to copy policy from policy server at 10.7.140.175:/var/cfengine/masterfiles
+Q: ".../cf-agent" -f u":        Please check
+Q: ".../cf-agent" -f u":        * cf-serverd is running on 10.7.140.175
+Q: ".../cf-agent" -f u":        * network connectivity to 10.7.140.175 on port 5308
+Q: ".../cf-agent" -f u":        * masterfiles 'body server control' - in particular allowconnects, trustkeysfrom and skipverify
+Q: ".../cf-agent" -f u":        * masterfiles 'bundle server' -> access: -> masterfiles -> admit/deny
+Q: ".../cf-agent" -f u":        It is often useful to restart cf-serverd in verbose mode (cf-serverd -v) on 10.7.140.175 to diagnose connection issues.
+Q: ".../cf-agent" -f u":        When updating masterfiles, wait (usually 5 minutes) for files to propagate to inputs on 10.7.140.175 before retrying.
+Q: ".../cf-agent" -f u": R: Did not start the scheduler
+Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500   notice: /default/cfe_internal_call_update/commands/'"/var/cfengine/bin/cf-agent" -f update.cf'[0]: Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: There is no readable input file at '/var/cfengine/inputs/update.cf'. (stat: No such file or directory)
+Q: ".../cf-agent" -f u": Q: ".../cf-agent" -f u": 2022-06-30T01:58:44-0500    error: CFEngine was not able to get confirmation of promises from cf-promises, so going to failsafe
+
+2022-06-30T01:58:44-0500    error: Bootstrapping failed, no input file at '/var/cfengine/inputs/promises.cf' after bootstrap
+
+
+
+
+
+Did I miss something. Since the Agent and Master is in same domain do I need to specifically add anything in ACL in def.cf in master?
+Client to Master Port connectivity is there on 5308
+cf-serverd is running as well.
+
+Can you please assist me on this ?
